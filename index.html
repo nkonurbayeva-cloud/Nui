@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мой новогодний вишлист 🎄</title>
+<style>
+  :root{
+    --bg1:#ff5f6d; --bg2:#ffc371; --ink:#2b1a3d; --card:#ffffffee;
+    --pink:#ff3d7f; --green:#18b46b; --blue:#3b82f6; --gold:#ffb703;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 15% 10%,rgba(255,255,255,.35) 0,transparent 35%),
+      radial-gradient(circle at 85% 90%,rgba(255,214,102,.45) 0,transparent 40%),
+      linear-gradient(160deg,#ff2e93 0%,#d63af9 50%,#ff6b8b 100%);
+    background-attachment:fixed;
+    min-height:100vh; overflow-x:hidden;
+  }
+  @keyframes rise{
+    0%{transform:translateY(0) scale(.6) rotate(-10deg);opacity:0}
+    15%{opacity:.9}
+    100%{transform:translateY(-115vh) scale(1.2) rotate(15deg);opacity:0}
+  }
+  @keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}}
+  @keyframes glow{0%,100%{box-shadow:0 10px 34px rgba(120,0,90,.35),0 0 0 3px rgba(255,255,255,.7)}50%{box-shadow:0 10px 44px rgba(255,46,147,.6),0 0 0 3px rgba(255,255,255,.95)}}
+  @keyframes shine{to{background-position:200% center}}
+  .snow{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .snow i{
+    position:absolute;top:-20px;color:#fff;opacity:.85;font-style:normal;
+    animation:fall linear infinite;
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+  main{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:18px 16px 60px}
+  section{
+    background:linear-gradient(180deg,#fff 0%,#fff0f7 100%);border-radius:28px;padding:24px 18px;margin-bottom:20px;
+    animation:glow 3.5s ease-in-out infinite;
+  }
+  h1{
+    font-size:clamp(26px,7vw,38px);line-height:1.2;text-align:center;font-weight:900;
+    font-family:Georgia,"Times New Roman",serif;font-style:italic;
+    background:linear-gradient(90deg,#ff2e93,#9b30ff,#ff6b8b,#ff2e93);background-size:200% auto;
+    -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+    animation:shine 4s linear infinite;
+  }
+  h2{
+    font-size:23px;margin-bottom:14px;text-align:center;font-weight:900;color:#c2185b;
+    font-family:Georgia,"Times New Roman",serif;font-style:italic;
+  }
+  .hello p{text-align:center;margin-top:10px;font-size:17px;line-height:1.5}
+  .emoji-row{font-size:38px;text-align:center;margin-bottom:8px;letter-spacing:6px;animation:beat 1.6s ease-in-out infinite}
+
+  /* countdown */
+  .count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+  .count div{
+    background:linear-gradient(145deg,#ff2e93,#a42cff);color:#fff;border-radius:18px;
+    padding:12px 4px;text-align:center;box-shadow:0 6px 16px rgba(214,58,249,.45);
+  }
+  .count b{display:block;font-size:clamp(24px,8vw,36px);font-variant-numeric:tabular-nums}
+  .count span{font-size:12px;opacity:.95}
+  .cd-title{text-align:center;font-weight:700;margin-top:16px}
+  .cd-done{display:none;text-align:center;font-size:22px;font-weight:800;margin-top:12px}
+
+  /* wish cards */
+  .wishes{display:grid;gap:14px}
+  .wish{
+    border:3px solid #ffd0e6;border-radius:24px;overflow:hidden;background:#fff;position:relative;
+    box-shadow:0 6px 18px rgba(255,46,147,.2);cursor:pointer;transition:.25s;
+  }
+  .wish:active{transform:scale(.98)}
+  .wish.sel{border-color:#ff2e93;box-shadow:0 0 0 5px rgba(255,46,147,.3),0 10px 26px rgba(255,46,147,.4);transform:translateY(-3px)}
+  .wish.sel::after{
+    content:"💖 Выбрано";position:absolute;top:10px;right:10px;background:#ff2e93;color:#fff;
+    font-weight:800;font-size:13px;padding:6px 12px;border-radius:99px;box-shadow:0 4px 10px rgba(0,0,0,.25);
+  }
+  .wish .pic{height:170px;display:flex;align-items:center;justify-content:center}
+  .wish .pic svg{width:100%;height:100%}
+  .wish .body{padding:12px 14px 14px}
+  .wish h3{font-size:19px}
+  .wish p{font-size:14px;color:#5b4a6e;margin-top:4px;line-height:1.4}
+  .wish .tag{
+    display:inline-block;margin-top:8px;font-size:12px;font-weight:700;
+    background:linear-gradient(90deg,#ffe0f0,#f0dcff);color:#b0105f;padding:5px 12px;border-radius:99px;
+  }
+  .pick{margin-top:12px;font-weight:800;color:#c2185b;min-height:24px;text-align:center;font-size:16px}
+  .note{font-size:12px;color:#7a6a8c;text-align:center;margin-top:8px}
+
+  /* feedback */
+  .rate{display:flex;justify-content:center;gap:6px;margin:6px 0 12px}
+  .rate button{
+    font-size:32px;background:none;border:none;cursor:pointer;filter:grayscale(1) opacity(.5);transition:.15s;
+  }
+  .rate button.on{filter:none;transform:scale(1.15)}
+  label{display:block;font-weight:600;margin:10px 0 6px}
+  input,textarea{
+    width:100%;font:inherit;padding:12px 14px;border-radius:14px;border:2px solid #e5dcf2;background:#fff;
+  }
+  input,textarea{border-color:#ffc4de}
+  input:focus,textarea:focus{outline:none;border-color:#ff2e93;box-shadow:0 0 0 4px rgba(255,46,147,.18)}
+  textarea{min-height:90px;resize:vertical}
+  .btn{
+    display:block;width:100%;margin-top:14px;padding:15px;border:none;border-radius:16px;
+    font-size:17px;font-weight:800;color:#fff;cursor:pointer;
+    background:linear-gradient(135deg,#25d366,#0fa958);box-shadow:0 6px 18px rgba(15,169,88,.45);
+    animation:beat 2.2s ease-in-out infinite;
+  }
+  .btn.alt{background:linear-gradient(135deg,#ff2e93,#9b30ff);box-shadow:0 6px 18px rgba(214,58,249,.45);animation:none}
+  .btn:active{transform:scale(.98)}
+  footer{text-align:center;color:#fff;font-weight:700;font-size:18px;font-family:Georgia,serif;font-style:italic;text-shadow:0 2px 8px rgba(120,0,90,.5)}
+  .snow i.h{top:auto;bottom:-30px;animation-name:rise;color:inherit}
+</style>
+</head>
+<body>
+<div class="snow" id="snow"></div>
+
+<main>
+  <!-- Приветствие -->
+  <section class="hello">
+    <div class="emoji-row">🎄🎁✨</div>
+    <h1>Привет, любимый! 💖 Это мой новогодний вишлист!</h1>
+    <p>Я сделала для тебя маленький новогодний вишлист 🎁<br>
+       Посмотри карточки, выбери, что ты подаришь мне на Новый год, и нажми кнопку внизу — ответ придёт мне в WhatsApp 💬</p>
+
+    <div class="cd-title">⏳ До Нового 2027 года осталось:</div>
+    <div class="count" id="count">
+      <div><b id="d">00</b><span>дней</span></div>
+      <div><b id="h">00</b><span>часов</span></div>
+      <div><b id="m">00</b><span>минут</span></div>
+      <div><b id="s">00</b><span>секунд</span></div>
+    </div>
+    <div class="cd-done" id="done">🎆 С Новым годом! 🎆</div>
+  </section>
+
+  <!-- Выбор вишлиста -->
+  <section>
+    <h2>🎁 Выбери, что подаришь мне</h2>
+    <div class="wishes" id="wishes">
+
+      <article class="wish" data-name="iPhone 18 Pro">
+        <div class="pic">
+          <svg viewBox="0 0 400 170" preserveAspectRatio="xMidYMid slice">
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7f5af0"/><stop offset="1" stop-color="#2cb1ff"/></linearGradient></defs>
+            <rect width="400" height="170" fill="url(#g1)"/>
+            <circle cx="60" cy="30" r="3" fill="#fff"/><circle cx="340" cy="50" r="4" fill="#fff"/><circle cx="300" cy="140" r="2" fill="#fff"/>
+            <rect x="150" y="12" width="100" height="148" rx="18" fill="#1b1b24" stroke="#d9d9e6" stroke-width="3"/>
+            <rect x="158" y="22" width="84" height="128" rx="10" fill="#ff8a3d"/>
+            <rect x="182" y="26" width="36" height="9" rx="4.5" fill="#1b1b24"/>
+            <text x="200" y="95" text-anchor="middle" font-size="30">🎄</text>
+            <text x="200" y="125" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">iPhone 18 Pro</text>
+          </svg>
+        </div>
+        <div class="body">
+          <h3>📱 iPhone 18 Pro</h3>
+          <p>Новый флагман: самая крутая камера, быстрый чип и красивый титановый корпус.</p>
+          <span class="tag">Хочу очень!</span>
+        </div>
+      </article>
+
+      <article class="wish" data-name="Квартира 100 м² бизнес-класса">
+        <div class="pic">
+          <svg viewBox="0 0 400 170" preserveAspectRatio="xMidYMid slice">
+            <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1e3c72"/><stop offset="1" stop-color="#ff8a3d"/></linearGradient></defs>
+            <rect width="400" height="170" fill="url(#g2)"/>
+            <circle cx="320" cy="40" r="18" fill="#ffe08a"/>
+            <rect x="90" y="40" width="70" height="130" fill="#2b2f4a"/>
+            <rect x="170" y="15" width="90" height="155" fill="#3a3f63"/>
+            <rect x="270" y="55" width="60" height="115" fill="#2b2f4a"/>
+            <g fill="#ffe08a">
+              <rect x="100" y="55" width="12" height="12"/><rect x="125" y="55" width="12" height="12"/>
+              <rect x="100" y="85" width="12" height="12"/><rect x="125" y="110" width="12" height="12"/>
+              <rect x="185" y="30" width="12" height="12"/><rect x="212" y="30" width="12" height="12"/><rect x="238" y="60" width="12" height="12"/>
+              <rect x="185" y="90" width="12" height="12"/><rect x="212" y="120" width="12" height="12"/>
+              <rect x="283" y="75" width="12" height="12"/><rect x="305" y="105" width="12" height="12"/>
+            </g>
+            <text x="30" y="150" font-size="34">🏡</text>
+            <text x="345" y="150" font-size="30">🎄</text>
+          </svg>
+        </div>
+        <div class="body">
+          <h3>🏙️ Квартира 100 м², бизнес-класс</h3>
+          <p>Светлая, просторная, с панорамными окнами и большой гостиной — чтобы ставить ёлку и встречать гостей!</p>
+          <span class="tag">Мечта года</span>
+        </div>
+      </article>
+
+      <article class="wish" data-name="Закрыть все мои кредиты">
+        <div class="pic">
+          <svg viewBox="0 0 400 170" preserveAspectRatio="xMidYMid slice">
+            <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#11998e"/><stop offset="1" stop-color="#38ef7d"/></linearGradient></defs>
+            <rect width="400" height="170" fill="url(#g3)"/>
+            <circle cx="110" cy="85" r="46" fill="#ffd54a" stroke="#e0a800" stroke-width="5"/>
+            <text x="110" y="100" text-anchor="middle" font-size="44" font-weight="800" fill="#9a6a00">₸</text>
+            <circle cx="190" cy="110" r="32" fill="#ffd54a" stroke="#e0a800" stroke-width="5"/>
+            <text x="190" y="122" text-anchor="middle" font-size="30" font-weight="800" fill="#9a6a00">₸</text>
+            <rect x="250" y="40" width="110" height="90" rx="10" fill="#fff"/>
+            <text x="305" y="78" text-anchor="middle" font-size="16" font-weight="800" fill="#18b46b">Кредит</text>
+            <text x="305" y="108" text-anchor="middle" font-size="26" font-weight="800" fill="#18b46b">0 ₸ ✅</text>
+            <text x="30" y="40" font-size="26">🎉</text><text x="360" y="28" font-size="22">✨</text>
+          </svg>
+        </div>
+        <div class="body">
+          <h3>💸 Закрыть все мои кредиты</h3>
+          <p>Начать новый год с чистого листа: без долгов, без платежей и с лёгкой душой!</p>
+          <span class="tag">Свобода!</span>
+        </div>
+      </article>
+
+    </div>
+    <div class="pick" id="pick">👆 Нажми на карточку, чтобы выбрать</div>
+    <div class="note">Картинки — примерные иллюстрации.</div>
+  </section>
+
+  <!-- Обратная связь -->
+  <section>
+    <h2>💌 Твой ответ</h2>
+    <div style="text-align:center;font-weight:600">Как тебе мой вишлист?</div>
+    <div class="rate" id="rate">
+      <button data-v="1">😕</button><button data-v="2">🙂</button><button data-v="3">😃</button><button data-v="4">😍</button><button data-v="5">🤩</button>
+    </div>
+    <label for="name">Твоё имя</label>
+    <input id="name" placeholder="Как мне тебя подписать? 💕">
+    <label for="msg">Пара тёплых слов для меня</label>
+    <textarea id="msg" placeholder="Напиши, что хочешь добавить 🎄"></textarea>
+
+    <button class="btn" id="wa">📲 Отправить в WhatsApp</button>
+    <button class="btn alt" id="share">🔗 Поделиться вишлистом</button>
+    <div class="note">Откроется WhatsApp с готовым сообщением — останется нажать «Отправить».</div>
+  </section>
+
+  <footer>С наступающим, любимый! 💕🎄🎁</footer>
+</main>
+
+<script>
+  // ====== НАСТРОЙКИ ======
+  // Впиши свой номер в международном формате без + и пробелов (например 77011234567),
+  // чтобы ответы приходили именно тебе. Если оставить пустым — WhatsApp предложит выбрать контакт.
+  const MY_PHONE = "77081027645";
+
+  // Снег
+  (function(){
+    const s=document.getElementById('snow'), f=['❄','❅','❆','✦'];
+    for(let i=0;i<18;i++){
+      const e=document.createElement('i');
+      e.textContent=f[i%f.length];
+      e.style.left=Math.random()*100+'%';
+      e.style.fontSize=(10+Math.random()*16)+'px';
+      e.style.animationDuration=(7+Math.random()*9)+'s';
+      e.style.animationDelay=(-Math.random()*12)+'s';
+      s.appendChild(e);
+    }
+    const hearts=['💖','💗','💕','❤️','💘','💞'];
+    for(let i=0;i<20;i++){
+      const e=document.createElement('i');
+      e.className='h';
+      e.textContent=hearts[i%hearts.length];
+      e.style.left=Math.random()*100+'%';
+      e.style.fontSize=(16+Math.random()*22)+'px';
+      e.style.animationDuration=(6+Math.random()*8)+'s';
+      e.style.animationDelay=(-Math.random()*12)+'s';
+      s.appendChild(e);
+    }
+  })();
+
+  // Обратный отсчёт до ближайшего Нового года
+  const now0=new Date();
+  const target=new Date(now0.getFullYear()+1,0,1,0,0,0);
+  const pad=n=>String(n).padStart(2,'0');
+  function tick(){
+    let diff=target-new Date();
+    if(diff<=0){
+      document.getElementById('count').style.display='none';
+      document.getElementById('done').style.display='block';
+      return;
+    }
+    const d=Math.floor(diff/864e5); diff%=864e5;
+    const h=Math.floor(diff/36e5);  diff%=36e5;
+    const m=Math.floor(diff/6e4);   diff%=6e4;
+    const s=Math.floor(diff/1e3);
+    document.getElementById('d').textContent=d;
+    document.getElementById('h').textContent=pad(h);
+    document.getElementById('m').textContent=pad(m);
+    document.getElementById('s').textContent=pad(s);
+  }
+  tick(); setInterval(tick,1000);
+
+  // Выбор желания
+  let chosen="", rating=0;
+  document.querySelectorAll('.wish').forEach(card=>{
+    card.addEventListener('click',()=>{
+      document.querySelectorAll('.wish').forEach(c=>c.classList.remove('sel'));
+      card.classList.add('sel');
+      chosen=card.dataset.name;
+      document.getElementById('pick').textContent='✅ Выбрано: '+chosen;
+    });
+  });
+
+  // Оценка
+  document.querySelectorAll('#rate button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      rating=+b.dataset.v;
+      document.querySelectorAll('#rate button').forEach(x=>x.classList.toggle('on',+x.dataset.v<=rating && +x.dataset.v===rating));
+    });
+  });
+
+  function buildText(){
+    const name=document.getElementById('name').value.trim();
+    const msg=document.getElementById('msg').value.trim();
+    const stars=rating?['😕','🙂','😃','😍','🤩'][rating-1]+' ('+rating+'/5)':'—';
+    return "🎄 Ответ на твой новогодний вишлист\n"+
+      "👤 От: "+(name||"твой любимый")+"\n"+
+      "🎁 Я подарю тебе: "+(chosen||"пока не выбрал")+"\n"+
+      "⭐ Оценка: "+stars+"\n"+
+      "💬 Комментарий: "+(msg||"—");
+  }
+
+  document.getElementById('wa').addEventListener('click',()=>{
+    if(!chosen){ alert('Сначала выбери, что подаришь мне 🎁'); return; }
+    const url="https://wa.me/"+MY_PHONE+"?text="+encodeURIComponent(buildText());
+    window.open(url,'_blank');
+  });
+
+  document.getElementById('share').addEventListener('click',async()=>{
+    const text="🎄 Загляни в мой новогодний вишлист и поделись мнением! 🎁";
+    if(navigator.share){
+      try{ await navigator.share({title:'Мой вишлист',text,url:location.href}); }catch(e){}
+    }else{
+      window.open("https://wa.me/?text="+encodeURIComponent(text+" "+location.href),'_blank');
+    }
+  });
+</script>
+</body>
+</html>
